@@ -5,24 +5,50 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/open_file"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:title="@string/open_file"/>
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/export_file"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/upload_file"/>
     </group>
-    <group android:id="@+id/g2">
-        <item android:id="@+id/g2_i1"
-            android:title="二组一号"
-            android:icon="@mipmap/ic_launcher"/>
-        <item android:id="@+id/g2_i2"
-            android:title="二组二号"
-            android:icon="@mipmap/ic_launcher"/>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/set_pe_state"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/set_pe_state"/>
+        <item
+            android:id="@+id/ensure"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/ensure"/>
+        <item
+            android:id="@+id/ensure_mannally"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/ensure_mannally"/>
+        <item
+            android:id="@+id/export_detection"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/export_detection"/>
+        <item
+            android:id="@+id/analyze"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/analyze"/>
+        <item
+            android:id="@+id/export_upload"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/export_upload"/>
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/logs"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/logs"/>
+        <item
+            android:id="@+id/helps"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/helps"/>
     </group>
 </menu>

@@ -1,13 +1,21 @@
 <resources>
-    <string name="app_name">PE_PPG_Mobie</string>
+    <string name="app_name">PE_PPG移动端</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="open_file">打开文件</string>
+    <string name="upload_file">上传文件</string>
+    <string name="set_pe_state">切换PE状态</string>
+    <string name="ensure">自动审核</string>
+    <string name="ensure_mannally">手动审核</string>
+    <string name="export_detection">导出检测结果</string>
+    <string name="analyze">特征分析</string>
+    <string name="export_upload">导出并上传</string>
+    <string name="logs">更新日志</string>
+    <string name="helps">帮助</string>
+
+
 </resources>
