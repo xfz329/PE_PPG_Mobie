@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/UrgeData/Documents/Codes/Graduate/PE_PPG_Mobie/app/src/main/res/drawable/ic_menu_camera.xml" value="0.4185" />
         <entry key="..\:/UrgeData/Documents/Codes/Graduate/PE_PPG_Mobie/app/src/main/res/layout/activity_main.xml" value="0.5390625" />
+        <entry key="..\:/UrgeData/Documents/Codes/Graduate/PE_PPG_Mobie/app/src/main/res/layout/app_bar_main.xml" value="0.5536458333333333" />
+        <entry key="..\:/UrgeData/Documents/Codes/Graduate/PE_PPG_Mobie/app/src/main/res/layout/nav_header_main.xml" value="0.5536458333333333" />
+        <entry key="..\:/UrgeData/Documents/Codes/Graduate/PE_PPG_Mobie/app/src/main/res/menu/activity_main_drawer.xml" value="0.5536458333333333" />
       </map>
     </option>
   </component>
