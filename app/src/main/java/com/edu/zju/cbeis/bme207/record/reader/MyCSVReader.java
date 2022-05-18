@@ -10,27 +10,7 @@ import com.edu.zju.cbeis.bme207.record.PERecord;
 
 public class MyCSVReader extends PPGReader{
 	public MyCSVReader() {
-	
-	}
 
-	public static void main(String[] args) {
-		long startTime=System.currentTimeMillis(); 
-		MyCSVReader c =new MyCSVReader();
-		String f="D:\\UrgeData\\Documents\\Codes\\Graduate\\PE_PPG\\data\\NO\\cj_wavePLETH_2018052514\\cj_wavePLETH_2018052514.csv";
-		PERecord rcd = c.readFromFile(f);
-		rcd.setTarget();
-		rcd.extractFeatures();
-//		Export2File ef = new Export2File(rcd);
-//		ef.export(true);
-		
-//		long endTime=System.currentTimeMillis();
-//		c.logger.info("Software running time without upload: "+(endTime-startTime)+"ms");
-//
-//		HttpClientPoolUtil hcpu = HttpClientPoolUtil.getHttpClientPoolUtil();
-//		hcpu.post(IPAddress.UPLOAD,rcd);
-//
-//		endTime=System.currentTimeMillis();
-//		c.logger.info("Software running time with upload: "+(endTime-startTime)+"ms");
 	}
 
 	@Override

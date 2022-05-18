@@ -12,6 +12,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.edu.zju.cbeis.bme207.mobie.thread.ConvertThread;
+import com.edu.zju.cbeis.bme207.mobie.thread.EnsureThread;
+import com.edu.zju.cbeis.bme207.mobie.thread.OpenFileThread;
 import com.edu.zju.cbeis.bme207.mobie.transformer.Points2Entry;
 import com.edu.zju.cbeis.bme207.mobie.transformer.Record2LineData;
 import com.edu.zju.cbeis.bme207.record.PERecord;
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private PERecord peRecord;
     private LineChart chart;
+    private Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +71,39 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.open_file:
                         try_open();
                         break;
+                    case R.id.ensure:
+                        try_ensure();
+                        break;
                     default:
                         break;
                 }
                 drawerLayout.closeDrawer(navigationView);
                 return true;
+            }
+        });
+
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                switch (msg.what){
+                    case OpenFileThread.UNKNOWN_DATA_FORMAT:
+                        Toast.makeText(MainActivity.this,"暂时不支持.csv以外的数据格式",Toast.LENGTH_SHORT).show();
+                        break;
+                    case OpenFileThread.PE_RECORD_UPDATE_FINISHED:
+                        peRecord = (PERecord) msg.obj;
+                        update_data_from_pe_record();
+                        break;
+                    case ConvertThread.CONVERT_DATA_FINISHED:
+                        LineData lineData = (LineData)msg.obj;
+                        chart.setData(lineData);
+                        chart.invalidate();
+                    case EnsureThread.ENSURE_FINISHED:
+                        update_data_from_pe_record();
+                        break;
+                    default:
+                        break;
+                }
+                return false;
             }
         });
 
@@ -82,19 +116,11 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent,GET_FILE);
         Log.d("Path" ,"onClick: "+ Environment.getExternalStorageDirectory());
     }
-
-    private void open(String file){
-        PPGReader reader;
-        if(file.endsWith(".csv")){
-            reader =new MyCSVReader();
-            peRecord = reader.readFromFile(file);
-            update_data_from_pe_record();
+    private void try_ensure(){
+        if(peRecord!= null){
+            EnsureThread ensureThread = new EnsureThread(handler,peRecord);
+            ensureThread.start();
         }
-        if(file.endsWith(".json")){
-            reader =new MindaryReader();
-            peRecord = reader.readFromFile(file);
-        }
-        Log.d("open", "open: ");
     }
 
     private void init_line_chart(){
@@ -125,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void update_data_from_pe_record(){
-        chart.setData(new Record2LineData().convert(peRecord));
-        chart.invalidate();
+        ConvertThread convertThread = new ConvertThread(handler,peRecord);
+        convertThread.start();
     }
 
 
@@ -137,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
             Uri uri = data.getData();
             String path =uri.toString().substring(7);
             Log.d("File", "onActivityResult: "+path);
-            open(path);
+            OpenFileThread openFileThread = new OpenFileThread(handler,path);
+            openFileThread.start();
             Toast.makeText(getApplicationContext(),"get new file: "+path,Toast.LENGTH_SHORT).show();
             Log.d("test", "onActivityResult: "+uri);
         }

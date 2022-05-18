@@ -19,22 +19,32 @@ public class File2String {
     public String process(File f){
         String result = "";
 //        logger.info("Start reading " + f.getPath());
+        Long file_length = f.length();
+        byte[] content = new byte[file_length.intValue()];
         try {
-            FileReader fileReader = new FileReader(f);
-            Reader reader = new InputStreamReader(new FileInputStream(f), "utf-8");
-            int ch = 0;
-            StringBuffer sb = new StringBuffer();
-            while ((ch = reader.read()) != -1) {
-                sb.append((char) ch);
-            }
-            fileReader.close();
-            reader.close();
-            result = sb.toString();
-//            logger.info("Read " + f.getPath() + " finished");
+            FileInputStream in = new FileInputStream(f);
+            in.read(content);
+            in.close();
         } catch (Exception e) {
-//            logger.info("Read " + f.getPath() + " failed");
             e.printStackTrace();
         }
+        result = new String(content);
+//        try {
+//            FileReader fileReader = new FileReader(f);
+//            Reader reader = new InputStreamReader(new FileInputStream(f), "utf-8");
+//            int ch = 0;
+//            StringBuffer sb = new StringBuffer();
+//            while ((ch = reader.read()) != -1) {
+//                sb.append((char) ch);
+//            }
+//            fileReader.close();
+//            reader.close();
+//            result = sb.toString();
+////            logger.info("Read " + f.getPath() + " finished");
+//        } catch (Exception e) {
+////            logger.info("Read " + f.getPath() + " failed");
+//            e.printStackTrace();
+//        }
         return result;
     }
 }
