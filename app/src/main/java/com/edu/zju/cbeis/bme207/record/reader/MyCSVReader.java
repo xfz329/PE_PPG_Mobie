@@ -52,7 +52,9 @@ public class MyCSVReader extends PPGReader{
 					content.add(Integer.parseInt(tmp));
             }
             csvReader.close();
-            v=content.stream().mapToInt(Integer::intValue).toArray();
+			v = new int[content.size()];
+			for (int i=0;i<content.size();i++)
+				v[i] = content.get(i).intValue();
         } catch (IOException e) {
             e.printStackTrace();
 //			logger.error("IOException, read file failed!");
