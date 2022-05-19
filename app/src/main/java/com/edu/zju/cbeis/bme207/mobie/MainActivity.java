@@ -3,11 +3,15 @@ package com.edu.zju.cbeis.bme207.mobie;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private PERecord peRecord;
     private LineChart chart;
     private Handler handler;
+    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
+        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
         init_line_chart();
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -104,6 +111,16 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
                 return false;
+            }
+        });
+
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!drawerLayout.isDrawerOpen(navigationView)) {
+                    drawerLayout.openDrawer(navigationView);
+                }
             }
         });
 
@@ -161,12 +178,33 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GET_FILE && resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            String path =uri.toString().substring(7);
-            Log.d("File", "onActivityResult: "+path);
+            String path =getDataColumn(this, uri, null, null);
+            Log.d("File", "onActivityResult: "+path+" "+uri);
             OpenFileThread openFileThread = new OpenFileThread(handler,path);
             openFileThread.start();
             Toast.makeText(getApplicationContext(),"get new file: "+path,Toast.LENGTH_SHORT).show();
-            Log.d("test", "onActivityResult: "+uri);
         }
     }
+
+    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = { column };
+        try {
+            try{
+                cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            }catch (Exception e) {
+
+            }
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
 }
